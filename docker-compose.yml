@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  mysqldb:
+    image: mysql
+    container_name: sqldb
+    restart: always
+    environment:
+      - MYSQL_DATABASE=userdb
+      - MYSQL_USER=dm
+      - MYSQL_PASSWORD=dmpass 
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    ports:
+      - 3306:3306
+  scrapper:
+    build: 
+      context: ./scrapper
+    container_name: scrapper
+    restart: always
+    ports:
+      - 8081:80
+    depends_on:
+      - mysqldb
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=mysqldb
+    depends_on:
+      - mysqldb
