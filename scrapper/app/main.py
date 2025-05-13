@@ -1,4 +1,6 @@
 import mysql.connector
+print("App Started.")
+
 try:
     sql = mysql.connector.connect(
         host="mysqldb",

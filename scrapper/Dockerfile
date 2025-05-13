@@ -1,8 +1,8 @@
 FROM python:3.13-alpine
 
 WORKDIR /app
-ADD main.py .
-ADD requirements.txt .
+COPY app .
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 CMD ["python","./main.py"]
