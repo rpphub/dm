@@ -12,16 +12,6 @@ services:
       - 3306:3306
     volumes:
     - ./sql:/docker-entrypoint-initdb.d
-  scrapper:
-    build: 
-      context: ./scrapper
-    container_name: scrapper
-    #restart: always
-    ports:
-      - 8081:80
-    depends_on:
-      - mysqldb
-
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin
@@ -30,5 +20,21 @@ services:
       - 8080:80
     environment:
       - PMA_HOST=mysqldb
+    depends_on:
+      - mysqldb      
+  scrapper:
+    build: 
+      context: ./scrapper
+    container_name: scrapper
+    #restart: always
+    depends_on:
+      - mysqldb
+  api_site:
+    build: 
+      context: ./api_site
+    container_name: api_site
+    ports:
+      - 8501:8501
+    #restart: always
     depends_on:
       - mysqldb
