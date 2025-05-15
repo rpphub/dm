@@ -1,7 +1,7 @@
 # DMlab Próba feladat
 Gitről clone-ozás után projekt indítása dockerrel. Gyökér könyvtárból parancssor->
 ```
-docker compose up-d
+docker compose up -d
 
 ```
 
