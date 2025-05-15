@@ -2,29 +2,43 @@ import mysql.connector
 from product.product import Product
 from datetime import date, datetime, timedelta
 
-def add_product_to_db(product:Product):
+class Database():
+    def __init__(self,host:str, port:int, user:str, passw:str):
+        self.host = host
+        self.port = port
+        self.user = user
+        self.passw = passw
 
-  db = mysql.connector.connect(
-      host="mysqldb",
-      port=3306,
-      user="dm",
-      password="dmpass")
-  
-  '''
-  db = mysql.connector.connect(
-      host="127.0.0.1",
-      port=3306,
-      user="dm",
-      password="dmpass")
-  '''
+    def isRdy(self)->bool:
+        try:
+            db = mysql.connector.connect(
+            host=self.host,
+            port=self.port,
+            user=self.user,
+            password=self.passw)
 
-  cursor = db.cursor()
-  sql = "INSERT INTO userdb.foods (product, price, restaurant, datetime) VALUES (%s, %s, %s, %s)"
-  
-  timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-  values = (product.name, product.price, product.restaurantName, timestamp)
+            db.close()
+            return 1
+        except Exception as e:
+            print(f"Error: {e}")
+            return 0
 
-  cursor.execute(sql, values)
-  db.commit()
+    def add_product_to_db(self, product:Product):
 
-  db.close()
+        db = mysql.connector.connect(
+        host=self.host,
+        port=self.port,
+        user=self.user,
+        password=self.passw)
+
+        cursor = db.cursor()
+        sql = "INSERT INTO userdb.foods (product, price, restaurant, datetime) VALUES (%s, %s, %s, %s)"
+
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        values = (product.name, product.price, product.restaurantName, timestamp)
+
+        cursor.execute(sql, values)
+        db.commit()
+
+        db.close()
+    
